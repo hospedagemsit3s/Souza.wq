@@ -1,0 +1,392 @@
+<!-- CÓDIGO COMPLETO -->
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <title>@Souza.wq</title>
+  <style>
+    /* Cor Rosa Claro */
+    :root {
+      --pink-color: #FFC0CB; /* Rosa Claro */
+      --dark-pink-color: #FF69B4; /* Rosa Choque, para contraste */
+      --light-red-color: lightcoral;
+      --light-green-color: lightgreen;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      height: 100vh;
+      margin: 0;
+      background-color: #1b1b1b;
+      color: #fff;
+      overflow: hidden;
+    }
+    .container {
+      width: 300px;
+      padding: 20px;
+      /* Alterado de azul para rosa e preto */
+      background: linear-gradient(to bottom, var(--dark-pink-color), #000000);
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+      margin-top: 140px;
+      position: fixed;
+    }
+    h2 {
+      text-align: center;
+      /* Alterado de azul para rosa */
+      color: var(--pink-color);
+    }
+    .mod-menu {
+      display: none; /* Escondido por padrão, só aparece após o login */
+      margin-top: 20px;
+    }
+    .menu-item {
+      margin: 8px 0;
+      padding: 10px;
+      /* Alterado de azul para rosa */
+      background-color: var(--dark-pink-color);
+      border-radius: 4px;
+      cursor: pointer;
+      text-align: center;
+      color: #fff;
+      position: relative;
+      font-size: 16px;
+    }
+    .menu-item::before {
+      content: '►';
+      position: absolute;
+      left: 10px;
+      font-size: 14px;
+      transition: transform 0.2s;
+    }
+    .menu-item.open::before {
+      transform: rotate(90deg);
+    }
+    .sub-options {
+      display: none;
+      padding-left: 20px;
+    }
+    .checkbox-label {
+      font-size: 18px;
+      color: #ffffff;
+    }
+    .checkbox-label input {
+      width: 20px;
+      height: 20px;
+      vertical-align: middle;
+      margin-right: 10px;
+      /* Alterado de roxo para rosa */
+      accent-color: var(--pink-color);
+    }
+    .command-prompt {
+      margin-top: 20px;
+      padding: 10px;
+      background-color: #2e2e2e;
+      /* Alterado de roxo para rosa */
+      border: 1px solid var(--pink-color);
+      border-radius: 4px;
+      font-size: 14px;
+      max-height: 100px;
+      overflow-y: auto;
+      color: #fff;
+    }
+
+    /* Estilos da Tela de Login */
+    #loginScreen {
+      width: 300px;
+      padding: 20px;
+      background-color: #2e2e2e;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+      margin-top: 140px;
+      position: fixed;
+      text-align: center;
+    }
+    #loginScreen h3 {
+      color: var(--pink-color);
+      margin-bottom: 20px;
+    }
+    #loginScreen input[type="text"] {
+      width: 90%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid var(--pink-color);
+      background-color: #1b1b1b;
+      color: #fff;
+      border-radius: 4px;
+      text-align: center;
+    }
+    #loginScreen button {
+      width: 90%;
+      padding: 10px;
+      /* Alterado de azul para rosa */
+      background-color: var(--pink-color);
+      color: #1b1b1b;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+    #loginScreen button:hover {
+      background-color: var(--dark-pink-color);
+    }
+    #loginMessage {
+      color: var(--light-red-color);
+      margin-top: 10px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  
+  <!-- Tela de Login -->
+  <div id="loginScreen">
+    <h3>Login - @Souza.wq</h3>
+    <input type="text" id="keyInput" placeholder="Insira sua Key Única" />
+    <button onclick="login()">Entrar</button>
+    <p id="loginMessage"></p>
+  </div>
+
+  <div class="container" id="mainContainer">
+    <div class="mod-menu" id="modMenu">
+      <h2>@Souza.wq</h2>
+
+      <div class="menu-item" onclick="toggleOptions(this, 'trick-options')">Trick Functions</div>
+      <div class="sub-options" id="trick-options">
+        <label class="checkbox-label"><input type="checkbox" onchange="updatePrompt(this, 'TrickHead')"> TrickHead</label><br>
+        <label class="checkbox-label"><input type="checkbox" onchange="updatePrompt(this, 'TrickLock')"> Trick Lock</label><br>
+        <label class="checkbox-label"><input type="checkbox" onchange="updatePrompt(this, 'AimbotTrick')"> Aimbot Forte</label>
+      </div>
+
+      <div class="menu-item" onclick="toggleOptions(this, 'legit-options')">Auxílio Functions</div>
+      <div class="sub-options" id="legit-options">
+        <label class="checkbox-label"><input type="checkbox" onchange="updatePrompt(this, 'AuxilioRecuo')"> Auxílio Recuo</label><br>
+        <label class="checkbox-label"><input type="checkbox" onchange="updatePrompt(this, 'AuxilioScope')"> Auxílio Scope</label><br>
+        <label class="checkbox-label"><input type="checkbox" onchange="updatePrompt(this, 'AimFOV')"> AimFOV</label>
+      </div>
+
+      <div class="menu-item" onclick="toggleOptions(this, 'extra-options')">Extra Tricks</div>
+      <div class="sub-options" id="extra-options">
+        <label class="checkbox-label"><input type="checkbox" onchange="updatePrompt(this, 'TrickSnap')"> TrickSnap</label><br>
+        <label class="checkbox-label"><input type="checkbox" onchange="updatePrompt(this, 'TrickTrack')"> TrickTrack</label><br>
+        <label class="checkbox-label"><input type="checkbox" onchange="updatePrompt(this, 'AimAssistX')"> AimAssistX</label><br>
+        <label class="checkbox-label"><input type="checkbox" onchange="updatePrompt(this, 'AimAssistY')"> AimAssistY</label><br>
+        <label class="checkbox-label"><input type="checkbox" onchange="updatePrompt(this, 'AntiShaking')"> AntiShaking</label>
+      </div>
+
+      <div class="command-prompt" id="commandPrompt"></div>
+    </div>
+  </div>
+
+  <script>
+    const loopTimers = {};
+    const CORRECT_KEY = 'Souzaxiters-key-TQXUF';
+    const KEY_STORAGE_NAME = 'souza_key_logged';
+
+    // Função de Login
+    function login() {
+      const keyInput = document.getElementById('keyInput').value.trim();
+      const loginMessage = document.getElementById('loginMessage');
+      
+      if (keyInput === CORRECT_KEY) {
+        localStorage.setItem(KEY_STORAGE_NAME, 'true');
+        loginMessage.textContent = 'Login bem-sucedido!';
+        loginMessage.style.color = 'var(--light-green-color)';
+        setTimeout(showModMenu, 500);
+      } else {
+        loginMessage.textContent = 'Key incorreta. Tente novamente.';
+        loginMessage.style.color = 'var(--light-red-color)';
+      }
+    }
+
+    // Função para mostrar o menu após o login
+    function showModMenu() {
+      document.getElementById('loginScreen').style.display = 'none';
+      document.getElementById('modMenu').style.display = 'block';
+      document.getElementById('mainContainer').style.marginTop = '140px'; // Ajusta a margem do menu
+    }
+
+    // Função para verificar o estado do login ao carregar a página
+    function checkLoginStatus() {
+      if (localStorage.getItem(KEY_STORAGE_NAME) === 'true') {
+        showModMenu();
+      } else {
+        document.getElementById('modMenu').style.display = 'none';
+        document.getElementById('loginScreen').style.display = 'block';
+      }
+    }
+
+    // Chama a verificação de login ao carregar a página
+    window.onload = checkLoginStatus;
+
+    function toggleOptions(element, id) {
+      const options = document.getElementById(id);
+      if (!options) return;
+      const isOpen = options.style.display === 'block';
+      options.style.display = isOpen ? 'none' : 'block';
+      element.classList.toggle('open', !isOpen);
+    }
+
+    function updatePrompt(checkbox, modName) {
+      const prompt = document.getElementById('commandPrompt');
+      let message = modName + (checkbox.checked ? " Ativado" : " Desativado");
+      // Cores ajustadas para usar as variáveis CSS
+      const color = checkbox.checked ? 'var(--light-green-color)' : 'var(--light-red-color)';
+      prompt.innerHTML += '<span style="color: ' + color + ';">' + message + '</span><br>';
+      prompt.scrollTop = prompt.scrollHeight;
+
+      if (checkbox.checked) startLoop(modName);
+      else stopLoop(modName);
+    }
+
+    function startLoop(modName) {
+      if (loopTimers[modName]) return;
+      loopTimers[modName] = setInterval(() => {
+        if (modName === 'TrickHead') trickhead();
+        else if (modName === 'TrickLock') trickLock();
+        else if (modName === 'AimbotTrick') aimbotTrick();
+        else if (modName === 'AuxilioRecuo') auxilioRecuo();
+        else if (modName === 'AuxilioScope') auxilioScope();
+        else if (modName === 'AimFOV') aimfov();
+        else if (modName === 'TrickSnap') trickSnap();
+        else if (modName === 'TrickTrack') trickTrack();
+        else if (modName === 'AimAssistX') aimAssistX();
+        else if (modName === 'AimAssistY') aimAssistY();
+        else if (modName === 'AntiShaking') antiShaking();
+      }, 1000);
+    }
+
+    function stopLoop(modName) {
+      if (loopTimers[modName]) {
+        clearInterval(loopTimers[modName]);
+        delete loopTimers[modName];
+      }
+    }
+
+    // Funções de Mod (mantidas inalteradas)
+    function trickhead() {
+      console.log("Loop ativo: TrickHead executando...");
+      let miraY = 200;
+      let headY = 100;
+      let velocidade = 0.3;
+      let loop = setInterval(() => {
+        let ajuste = (headY - miraY) * velocidade;
+        miraY += ajuste;
+        console.log("Subindo mira para cabeça:", miraY.toFixed(2));
+        if (Math.abs(headY - miraY) < 1) clearInterval(loop);
+      }, 100);
+    }
+
+    function trickLock() {
+      console.log("Loop ativo: Trick Lock executando...");
+      let miraX = 50, inimigoX = 80, velocidade = 0.2;
+      let loop = setInterval(() => {
+        let ajuste = (inimigoX - miraX) * velocidade;
+        miraX += ajuste;
+        console.log("Ajustando lateral:", miraX.toFixed(2));
+        if (Math.abs(inimigoX - miraX) < 1) clearInterval(loop);
+      }, 100);
+    }
+
+    function aimbotTrick() {
+      console.log("Loop ativo: Aimbot executando...");
+      let miraX = 200, miraY = 40, inimigoX = 100, inimigoY = 80, velocidade = 0.55;
+      let loop = setInterval(() => {
+        miraX += (inimigoX - miraX) * velocidade;
+        miraY += (inimigoY - miraY) * velocidade;
+        console.log(`Aimbot mira: X=${miraX.toFixed(1)} Y=${miraY.toFixed(1)}`);
+        if (Math.abs(inimigoX - miraX) < 1 && Math.abs(inimigoY - miraY) < 1) clearInterval(loop);
+      }, 80);
+    }
+
+    function auxilioRecuo() {
+      console.log("Recuo ativo...");
+      let recuo = 0, intensidade = 1.5;
+      let loop = setInterval(() => {
+        recuo += intensidade;
+        console.log("Recuo:", recuo.toFixed(2));
+        if (recuo >= 15) clearInterval(loop);
+      }, 80);
+    }
+
+    function auxilioScope() {
+      console.log("Scope ativo...");
+      let mira = 90, alvo = 115, velocidade = 0.25;
+      let loop = setInterval(() => {
+        mira += (alvo - mira) * velocidade;
+        console.log("Scope mira:", mira.toFixed(2));
+        if (Math.abs(alvo - mira) < 0.5) clearInterval(loop);
+      }, 100);
+    }
+
+    function aimfov() {
+      console.log("AimFOV executando...");
+      let miraX = 100, miraY = 100, inimigoX = 130, inimigoY = 85, vel = 0.18;
+      let loop = setInterval(() => {
+        miraX += (inimigoX - miraX) * vel;
+        miraY += (inimigoY - miraY) * vel;
+        console.log(`AimFOV mira: X=${miraX.toFixed(1)} Y=${miraY.toFixed(1)}`);
+        if (Math.abs(inimigoX - miraX) < 1 && Math.abs(inimigoY - miraY) < 1) clearInterval(loop);
+      }, 80);
+    }
+
+    function trickSnap() {
+      console.log("Snap rápido ativado!");
+      let miraX = 120, miraY = 150;
+      let alvoX = 100, alvoY = 90;
+      miraX = alvoX;
+      miraY = alvoY;
+      console.log(`Snap feito: X=${miraX} | Y=${miraY}`);
+    }
+
+    function trickTrack() {
+      console.log("Rastreando alvo...");
+      let miraX = 160, alvoX = 100, velocidade = 0.15;
+      let loop = setInterval(() => {
+        miraX += (alvoX - miraX) * velocidade;
+        console.log(`Track mira X: ${miraX.toFixed(1)}`);
+        if (Math.abs(alvoX - miraX) < 1) clearInterval(loop);
+      }, 70);
+    }
+
+    function aimAssistX() {
+      console.log("Assist X ativado...");
+      let miraX = 110, alvoX = 140, vel = 0.22;
+      let loop = setInterval(() => {
+        miraX += (alvoX - miraX) * vel;
+        console.log(`X ajustando: ${miraX.toFixed(1)}`);
+        if (Math.abs(alvoX - miraX) < 1) clearInterval(loop);
+      }, 60);
+    }
+
+    function aimAssistY() {
+      console.log("Assist Y ativado...");
+      let miraY = 100, alvoY = 70, vel = 0.22;
+      let loop = setInterval(() => {
+        miraY += (alvoY - miraY) * vel;
+        console.log(`Y ajustando: ${miraY.toFixed(1)}`);
+        if (Math.abs(alvoY - miraY) < 1) clearInterval(loop);
+      }, 60);
+    }
+
+    function antiShaking() {
+      console.log("AntiShaking ativado...");
+      let shakeX = [1, -1, 0.5, -0.5, 0];
+      let shakeY = [1, -1, 0.5, -0.5, 0];
+      let index = 0;
+      let loop = setInterval(() => {
+        let correçãoX = -shakeX[index];
+        let correçãoY = -shakeY[index];
+        console.log(`Corrigindo tremor: X=${correçãoX} | Y=${correçãoY}`);
+        index = (index + 1) % shakeX.length;
+        if (!loopTimers['AntiShaking']) clearInterval(loop);
+      }, 60);
+    }
+  </script>
+</body>
+</html>
